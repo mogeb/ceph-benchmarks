@@ -30,7 +30,7 @@ function stdev {
 #for w in randread; do
 for w in randread randwrite randrw; do
 printf "*********** $w workload *************\n"
-printf "Jobs\tReplication\tEC\n"
+printf "Jobs\tRep\tEC\n"
 for NJOBS in 1 2 8 16; do
 printf "$NJOBS"
 for FEATURE in replication ec; do

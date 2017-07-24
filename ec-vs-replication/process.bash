@@ -33,19 +33,19 @@ printf "*********** $w workload *************\n"
 printf "Jobs\tReplication\tEC\n"
 for i in 1 2 8 16; do
 printf "$i"
-for j in ec replication; do
+for FEATURE in ec replication; do
 IOPS_SET=()
 for r in 1 2 3; do
-  DIR=results/run$r/$j/$w
-  READ_IOPS=`awk -F ";" '{print $8}' $DIR/ceph_osd32_j${i}_qd128_b4.log | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
-  WRITE_IOPS=`awk -F ";" '{print $49}' $DIR/ceph_osd32_j${i}_qd128_b4.log | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
+  DIR=results/run$r/$FEATURE/$w
+  READ_IOPS=`awk -F ";" '{print $8}' $DIR/summary_j${i}.csv | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
+  WRITE_IOPS=`awk -F ";" '{print $49}' $DIR/summary_j${i}.csv | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
   IOPS=$((READ_IOPS + WRITE_IOPS))
   IOPS_SET+=(${IOPS})
 done
 AVG=`average IOPS_SET[@]`
 STDEV=`stdev IOPS_SET[@]`
 printf "\t%s" $STDEV
-# printf "%s -> %s -> %d -> %s -> %s\n" $w $j $i $AVG $STDEV
+# printf "%s -> %s -> %d -> %s -> %s\n" $w $FEATURE $i $AVG $STDEV
 done
 printf "\n"
 done

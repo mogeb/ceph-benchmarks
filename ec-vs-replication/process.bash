@@ -31,9 +31,9 @@ function stdev {
 for w in randread randwrite randrw; do
 printf "*********** $w workload *************\n"
 printf "Jobs\tReplication\tEC\n"
-for i in 1 2 8 16; do
-printf "$i"
-for FEATURE in ec replication; do
+for NJOBS in 1 2 8 16; do
+printf "$NJOBS"
+for FEATURE in replication ec; do
 IOPS_SET=()
 for r in 1 2 3; do
   DIR=results/run$r/$FEATURE/$w
@@ -45,7 +45,7 @@ done
 AVG=`average IOPS_SET[@]`
 STDEV=`stdev IOPS_SET[@]`
 printf "\t%s" $STDEV
-# printf "%s -> %s -> %d -> %s -> %s\n" $w $FEATURE $i $AVG $STDEV
+# printf "%s -> %s -> %d -> %s -> %s\n" $w $FEATURE $NJOBS $AVG $STDEV
 done
 printf "\n"
 done

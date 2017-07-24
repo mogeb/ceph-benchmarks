@@ -37,8 +37,8 @@ for FEATURE in replication ec; do
 IOPS_SET=()
 for r in 1 2 3; do
   DIR=results/run$r/$FEATURE/$w
-  READ_IOPS=`awk -F ";" '{print $8}' $DIR/summary_j${i}.csv | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
-  WRITE_IOPS=`awk -F ";" '{print $49}' $DIR/summary_j${i}.csv | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
+  READ_IOPS=`awk -F ";" '{print $8}' $DIR/summary_j${NJOBS}.csv | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
+  WRITE_IOPS=`awk -F ";" '{print $49}' $DIR/summary_j${NJOBS}.csv | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
   IOPS=$((READ_IOPS + WRITE_IOPS))
   IOPS_SET+=(${IOPS})
 done

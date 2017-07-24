@@ -44,8 +44,8 @@ for RUN in 1 2 3; do
                 ;;
                 ec)
                     POOL=rbd
-                    ceph osd pool create $POOL 12 12 erasure
-                    ceph osd pool set $POOL allow_ec_overwrites true
+                    ceph osd pool create $ECPOOL 12 12 erasure
+                    ceph osd pool set $ECPOOL allow_ec_overwrites true
                     rbd create --size 2048 --data-pool $ECPOOL $POOL/$IMAGE
                 ;;
                 esac

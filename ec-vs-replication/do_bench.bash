@@ -37,16 +37,16 @@ for RUN in 1 2 3; do
                 mkdir -p $DIR
 
                 case $FEATURE in
-                ec)
+                replication)
                     POOL=$REPPOOL
                     ceph osd pool create $POOL 12 12
-                    rbd create $IMAGE --size 2048 --pool $POOL --image-feature exclusive-lock
+                    rbd create $IMAGE --size 2048 --pool $POOL
                 ;;
-                replication)
+                ec)
                     POOL=$ECPOOL
                     ceph osd pool create $POOL 12 12 erasure
                     ceph osd pool set $POOL allow_ec_overwrites true
-                    rbd create $IMAGE --size=2G --data-pool $POOL
+                    rbd create $IMAGE --size 2048 --data-pool $POOL
                 ;;
                 esac
                 if [ "$WORKLOAD" == "randread" ]; then

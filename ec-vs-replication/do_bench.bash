@@ -46,7 +46,7 @@ for RUN in 1 2 3; do
                     POOL=$ECPOOL
                     ceph osd pool create $POOL 12 12 erasure
                     ceph osd pool set $POOL allow_ec_overwrites true
-                    rbd create $IMAGE --size 2048 --data-pool $POOL
+                    rbd create --size 2048 --data-pool $POOL rbd/$IMAGE
                 ;;
                 esac
                 if [ "$WORKLOAD" == "randread" ]; then
@@ -67,7 +67,11 @@ for RUN in 1 2 3; do
                 echo
                 echo
                 # cleanup
-                rbd rm -p $POOL $IMAGE
+                if [ "$FEATURE" == "ec" ] ; then
+                    rbd rm -p rbd/$IMAGE
+                else
+                    rbd rm -p $POOL $IMAGE
+                fi
             done
         done
     done

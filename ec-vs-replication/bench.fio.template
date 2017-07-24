@@ -1,0 +1,13 @@
+[global]
+ioengine=rbd
+clientname=admin
+pool=#POOL#
+rbdname=#IMAGE#
+invalidate=0
+rw=#WORKLOAD#
+bs=4k
+iodepth=128
+runtime=120
+
+[rbd_jobs_#NUM_JOBS#]
+numjobs=#NUM_JOBS#

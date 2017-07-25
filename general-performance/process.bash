@@ -7,7 +7,7 @@ source ../common/common.bash
 #for w in randread; do
 for WORKLOAD in randread randwrite randrw; do
     printf "*********** $WORKLOAD workload *************\n"
-    printf "Jobs\tRep\tEC\n"
+    printf "Jobs\t4k\t16k\t64k\t1m\t2m\n"
     for NJOBS in 1 2 8 16; do
         printf "$NJOBS"
         for BLOCKSIZE in 4k 16k 64k 1m 2m; do

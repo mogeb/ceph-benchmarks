@@ -42,7 +42,8 @@ for RUN in 1 2 3; do
                     sed "s!#LOGDIR#!$DIR!g"  > /tmp/bench.fio
 
                 cp /tmp/bench.fio $DIR
-                echo "Starting fio: WL = $WORKLOAD JOBS = $NJOBS"
+                echo
+                echo "Starting fio: WL = $WORKLOAD, BS = $BLOCKSIZE, JOBS = $NJOBS"
                 fio --output-format=terse /tmp/bench.fio > $RES
                 echo "Done"
                 echo

@@ -18,10 +18,16 @@ for WORKLOAD in randread randwrite randrw; do
                 WRITE_IOPS=`awk -F ";" '{print $49}' $DIR/summary_j${NJOBS}.csv | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
                 IOPS=$((READ_IOPS + WRITE_IOPS))
                 IOPS_SET+=(${IOPS})
+
+                READ_BW=`awk -F ";" '{print $7}' $DIR/summary_j${NJOBS}.csv | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
+                WRITE_BW=`awk -F ";" '{print $48}' $DIR/summary_j${NJOBS}.csv | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
+                BW=$((READ_BW + WRITE_BW))
+                BW_SET+=(${BW})
             done
             AVG=`average IOPS_SET[@]`
             STDEV=`stdev IOPS_SET[@]`
-            printf "\t%s" $AVG
+            AVG_BW=`average BW_SET[@]`
+            printf "\t%s" $AVG / $AVG_BW
             # printf "%s -> %s -> %d -> %s -> %s\n" $WORKLOAD $FEATURE $NJOBS $AVG $STDEV
         done
         printf "\n"

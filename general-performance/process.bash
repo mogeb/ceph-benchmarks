@@ -27,7 +27,7 @@ for WORKLOAD in randread randwrite randrw; do
             AVG=`average IOPS_SET[@]`
             STDEV=`stdev IOPS_SET[@]`
             AVG_BW=`average BW_SET[@]`
-            printf "\t%s" $AVG / $AVG_BW
+            printf "\t%s / %s" $AVG $AVG_BW
             # printf "%s -> %s -> %d -> %s -> %s\n" $WORKLOAD $FEATURE $NJOBS $AVG $STDEV
         done
         printf "\n"

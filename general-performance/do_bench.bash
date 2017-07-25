@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ../common/common.bash
+
 POOL=benchpool
 IMAGE=image01
 

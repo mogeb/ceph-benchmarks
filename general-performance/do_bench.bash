@@ -18,9 +18,9 @@ for RUN in 1 2 3; do
             for NJOBS in 1 2 8 16; do
                 DIR=results/run$RUN/$WORKLOAD/$BLOCKSIZE
                 RES=$DIR/summary_j${NJOBS}.csv
-                if [ -d $DIR ] ; then
+                if [ -f $RES ] ; then
                     echo
-                    echo "$DIR exists, skipping.."
+                    echo "$RES exists, skipping.."
                     echo
                     echo
                     continue

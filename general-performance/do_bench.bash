@@ -43,7 +43,7 @@ for RUN in 1 2 3; do
 
                 cp /tmp/bench.fio $DIR
                 echo
-                echo "Starting fio: WL = $WORKLOAD, BS = $BLOCKSIZE, JOBS = $NJOBS"
+                echo "Starting fio: Run $RUN, WL = $WORKLOAD, BS = $BLOCKSIZE, JOBS = $NJOBS"
                 fio --output-format=terse /tmp/bench.fio > $RES
                 echo "Done"
                 echo

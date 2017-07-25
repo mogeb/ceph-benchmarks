@@ -34,6 +34,13 @@ for RUN in 1 2 3; do
             for NJOBS in 1 2 8 16; do
                 DIR=results/run$RUN/$FEATURE/$WORKLOAD
                 RES=$DIR/summary_j${NJOBS}.csv
+                if [ -d $DIR ] ; then
+                    echo
+                    echo "$DIR exists, skipping.."
+                    echo
+                    echo
+                    continue
+                fi
                 mkdir -p $DIR
 
                 case $FEATURE in
@@ -50,7 +57,7 @@ for RUN in 1 2 3; do
                 ;;
                 esac
                 if [ "$WORKLOAD" == "randread" ]; then
-                rbd bench-write -p $POOL $IMAGE --io-size 4096 --io-threads 1 --io-total 64M --io-pattern rand
+                    rbd bench-write -p $POOL $IMAGE --io-size 4096 --io-threads 1 --io-total 64M --io-pattern rand
                 fi
                 mkdir -p $DIR
                 cat bench.fio.template |

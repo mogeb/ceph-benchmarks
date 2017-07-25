@@ -44,7 +44,7 @@ for r in 1 2 3; do
 done
 AVG=`average IOPS_SET[@]`
 STDEV=`stdev IOPS_SET[@]`
-printf "\t%s" $STDEV
+printf "\t%s" $AVG
 # printf "%s -> %s -> %d -> %s -> %s\n" $w $FEATURE $NJOBS $AVG $STDEV
 done
 printf "\n"

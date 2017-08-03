@@ -52,9 +52,8 @@ function stdev {
 
 function start_collectl {
     hostname=`hostname`
-    outfile = /tmp/ceph-benchmarks-run/${hostname}_${1}
     salt '*' cmd.run 'mkdir /tmp/ceph-benchmarks-run/'
-    salt '*' cmd.run 'collectl -s+mYZ -i 1:10 --rawdskfilt "%s" -F0 -f $outfile' --async
+    salt '*' cmd.run 'collectl -s+mYZ -i 1:10 --rawdskfilt "%s" -F0 -f /tmp/ceph-benchmarks-run/out' --async
 }
 
 function stop_collectl {

@@ -49,3 +49,14 @@ function stdev {
     local result=`echo "sqrt($sumsq/$size - ($sum/$size)^2)" | bc -l`
     printf "%.0f" $result
 }
+
+function start_collectl {
+    hostname=`hostname`
+    outfile = /tmp/ceph-benchmarks-run/${hostname}_${1}
+    salt '*' cmd.run 'mkdir /tmp/ceph-benchmarks-run/'
+    salt '*' cmd.run 'collectl -s+mYZ -i 1:10 --rawdskfilt "%s" -F0 -f $outfile' --async
+}
+
+function stop_collectl {
+    salt '*' cmd.run 'pkill collectl'
+}

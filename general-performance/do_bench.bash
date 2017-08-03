@@ -8,6 +8,8 @@ IMAGE=image01
 # log Cluster details
 log_configuration
 
+osds=("blueshark1.arch.suse.de" "blueshark2.arch.suse.de" "blueshark3.arch.suse.de" "blueshark4.arch.suse.de" "blueshark5.arch.suse.de" "blueshark5.arch.suse.de" "blueshark7.arch.suse.de")
+
 # runs (for volatility)
 for RUN in 1 2 3; do
     # patterns
@@ -43,11 +45,21 @@ for RUN in 1 2 3; do
 
                 cp /tmp/bench.fio $DIR
                 echo
+                echo "Starting collectl"
+                start_collectl run$RUN_$WORKLOAD_$BLOCKSIZE
+                echo
                 echo "Starting fio: Run $RUN, WL = $WORKLOAD, BS = $BLOCKSIZE, JOBS = $NJOBS"
                 fio --output-format=terse /tmp/bench.fio > $RES
                 echo "Done"
                 echo
+                echo "Stopping collectl"
+                stop_collectl
                 echo
+
+                for osd in "${osds[@]}"; do
+                    scp $osd:/tmp/ceph-benchmarks-run/* $DIR
+                done
+
                 # cleanup
                 rbd rm $POOL/$IMAGE
             done

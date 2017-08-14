@@ -1,10 +1,16 @@
 #!/bin/bash
 
-osds=("172.16.250.34" "172.16.250.35" "172.16.250.36" "172.16.250.37" "172.16.250.38" "172.16.250.39")
+source ../common/common.bash
 
-for osd in "${osds[@]}"; do
-    ssh $osd "rm ~/out"
-done
+# osds=("172.16.250.34" "172.16.250.35" "172.16.250.36" "172.16.250.37" "172.16.250.38" "172.16.250.39")
+osds=("osd1" "osd2" "osd3" "osd4" "osd5" "osd6")
+
+function copy_collectl_output {
+    for osd in "${osds[@]}"; do
+        mkdir -p $1/${osd}
+        scp -r $osd:/tmp/ceph-benchmarks-run/ $1/${osd}
+    done
+}
 
 # total available is 329733752 kB
 #        314 GB    157 GB    78 GB    39 GB    20 GB    10 GB    5 GB    2.5 GB  1.25 GB
@@ -23,11 +29,17 @@ for M in 329733752 164866876; do
     sleep 300
     echo "Assuming OSDs booted"
 
-    for osd in "${osds[@]}"; do
-        ssh $osd "cat /proc/meminfo >> ~/out"
-        ssh $osd "cat /etc/default/grub >> ~/out"
-        ssh $osd "echo >> ~/out"
-        ssh $osd "echo >> ~/out"
-        ssh $osd "echo >> ~/out"
-    done
+    echo "Starting collectl"
+    start_collectl
+    echo "Collecting information"
+    sleep 20
+    echo "Done collecting"
+    stop_collectl
+    echo "Stopped collectl"
+    echo "Copying everything to /tmp/all-collectl-${MEM}"
+    rm -rf /tmp/all-collectl/
+    copy_collectl_output /tmp/all-collectl/all-collectl-${MEM}
+    echo
 done
+
+echo "All done"

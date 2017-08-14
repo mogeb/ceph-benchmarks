@@ -52,8 +52,9 @@ function stdev {
 
 function start_collectl {
     hostname=`hostname`
+    rawdiskf="cciss/c\d+d\d+ |hd[ab] | sd[a-z]+ |dm-\d+ |xvd[a-z] |fio[a-z]+ | vd[a-z]+ |emcpower[a-z]+ |psv\d+ |nvme[0-9]n[0-9]+p[0-9]+ "
     salt '*' cmd.run 'mkdir /tmp/ceph-benchmarks-run/'
-    salt '*' cmd.run 'collectl -s+mYZ -i 1:10 --rawdskfilt "%s" -F0 -f /tmp/ceph-benchmarks-run/out' --async
+    salt '*' cmd.run 'collectl -P -s+cdmN -i 1 --rawdskfilt "$rawdiskf" -F0 -f /tmp/ceph-benchmarks-run/out' --async
 }
 
 function stop_collectl {

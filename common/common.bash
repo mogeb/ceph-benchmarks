@@ -19,6 +19,12 @@ function log_configuration {
     salt '*' pillar.get ceph >> results/info
     echo >> results/info
     echo >> results/info
+
+    echo "salt '*' pillar.get storage" >> results/info
+    salt '*' pillar.get storage >> results/info
+    echo >> results/info
+    echo >> results/info
+
     echo "ceph report" >> results/info
     ceph report >> results/info
     echo >> results/info

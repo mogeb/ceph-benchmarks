@@ -41,11 +41,11 @@ for folder in ses4-sp2-results ses5-sp3-results; do
                     BW=$((READ_BW + WRITE_BW))
                     BW_SET+=(${BW})
 
-                    RCLAT_AVG=`awk -F ";" '{print $12}' $DIR/summary_j${NJOBS}.csv | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
+                    RCLAT_AVG=`awk -F ";" '{print $16}' $DIR/summary_j${NJOBS}.csv | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
                     RCLAT_AVG=$((${RCLAT_AVG}/${NJOBS}))
                     RCLAT_AVG_SET+=(${RCLAT_AVG})
 
-                    WCLAT_AVG=`awk -F ";" '{print $53}' $DIR/summary_j${NJOBS}.csv | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
+                    WCLAT_AVG=`awk -F ";" '{print $57}' $DIR/summary_j${NJOBS}.csv | awk 'BEGIN {sum=0;} {sum += $1} END { printf("%d", sum); }'`
                     WCLAT_AVG=$((${WCLAT_AVG}/${NJOBS}))
                     WCLAT_AVG_SET+=(${WCLAT_AVG})
                 done

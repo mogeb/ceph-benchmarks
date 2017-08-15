@@ -62,8 +62,8 @@ function start_collectl {
     salt -C 'I@roles:storage' cmd.run 'rm -rf /tmp/ceph-benchmarks-run/'
     echo "Running mkdir /tmp/ceph-benchmarks-run/"
     salt -C 'I@roles:storage' cmd.run 'mkdir /tmp/ceph-benchmarks-run/'
-    echo "Running collectl -P -s+cDmN -i 1 --rawdskfilt "$rawdiskf" -F0 -f /tmp/ceph-benchmarks-run/out"
-    salt -C 'I@roles:storage' cmd.run 'collectl -P -s+cdmN -i 1 --rawdskfilt "cciss/c\d+d\d+ |hd[ab] | sd[a-z]+ |dm-\d+ |xvd[a-z] |fio[a-z]+ | vd[a-z]+ |emcpower[a-z]+ |psv\d+ |nvme[0-9]n[0-9]+p[0-9]+ " -F0 -f /tmp/ceph-benchmarks-run/out' --async
+    echo "Running collectl -P -s+cjDmN -i 1 --rawdskfilt "$rawdiskf" -F0 -f /tmp/ceph-benchmarks-run/"
+    salt -C 'I@roles:storage' cmd.run 'collectl -P -s+cjdmN -i 1 --rawdskfilt "cciss/c\d+d\d+ |hd[ab] | sd[a-z]+ |dm-\d+ |xvd[a-z] |fio[a-z]+ | vd[a-z]+ |emcpower[a-z]+ |psv\d+ |nvme[0-9]n[0-9]+p[0-9]+ " -F0 -f /tmp/ceph-benchmarks-run/' --async
 }
 
 function stop_collectl {

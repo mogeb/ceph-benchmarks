@@ -8,8 +8,6 @@ IMAGE=image01
 # log Cluster details
 log_configuration
 
-osds=("host1" "host2")
-
 # runs (for volatility)
 for RUN in 1 2; do
     # patterns
@@ -44,22 +42,9 @@ for RUN in 1 2; do
                     sed "s!#LOGDIR#!$DIR!g"  > /tmp/bench.fio
 
                 cp /tmp/bench.fio $DIR
-                echo
-                echo "Starting collectl"
-                start_collectl run$RUN_$WORKLOAD_$BLOCKSIZE
-                echo
                 echo "Starting fio: Run $RUN, WL = $WORKLOAD, BS = $BLOCKSIZE, JOBS = $NJOBS"
                 fio --output-format=terse /tmp/bench.fio > $RES
                 echo "Done"
-                echo
-                echo "Stopping collectl"
-                stop_collectl
-                echo
-
-                for osd in "${osds[@]}"; do
-                    scp $osd:/tmp/ceph-benchmarks-run/* $DIR
-                done
-                salt '*' cmd.run 'rm -rf /tmp/ceph-benchmarks-run/'
 
                 # cleanup
                 rbd rm $POOL/$IMAGE

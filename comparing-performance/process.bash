@@ -12,12 +12,13 @@ for folder in ses4-sp2-results ses5-sp3-results; do
         printf "*********** $WORKLOAD workload *************\n"
         printf "\t%8s \t\t%8s \t\t%8s \t\t%8s\n" "4k" "64k" "1m" "2m"
 
+        # UNCOMMENT THESE TWO LINES TO USE IOPS / BW
         # FIRST_LEG="IOPS"
         # SECOND_LEG="BW"
-        # FIRST_LEG="READ_CLAT"
-        # SECOND_LEG="WRITE_CLAT"
-        FIRST_LEG="READ_SLAT"
-        SECOND_LEG="WRITE_SLAT"
+
+        # UNCOMMENT THESE TWO LINES TO USE READ_CLAT / WRITE_CLAT
+        FIRST_LEG="READ_CLAT"
+        SECOND_LEG="WRITE_CLAT"
         printf "\t%10s / %10s\t%10s / %10s\t%10s / %10s\t%10s / %10s\n" $FIRST_LEG $SECOND_LEG $FIRST_LEG $SECOND_LEG $FIRST_LEG $SECOND_LEG $FIRST_LEG $SECOND_LEG
         for NJOBS in 1 8 16; do
             printf "$NJOBS"
@@ -54,7 +55,10 @@ for folder in ses4-sp2-results ses5-sp3-results; do
                 AVG_BW=`average BW_SET[@]`
                 AVG_RCLAT_AVG=`average RCLAT_AVG_SET[@]`
                 AVG_WCLAT_AVG=`average WCLAT_AVG_SET[@]`
+                # UNCOMMENT THESE TWO LINES TO USE IOPS / BW
                 # printf "\t%8s / %8s" $AVG $AVG_BW
+
+                # UNCOMMENT THESE TWO LINES TO USE READ_CLAT / WRITE_CLAT
                 printf "\t%10s / %10s" $AVG_RCLAT_AVG $AVG_WCLAT_AVG
             done
             printf "\n"

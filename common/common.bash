@@ -2,19 +2,22 @@
 function log_configuration {
     mkdir -p results
 
-    date >> results/info
+    date > results/info
     echo >> results/info
-    ceph --version > results/info
+    ceph --version >> results/info
     fio --version >> results/info
     echo >> results/info
+
     echo "ceph osd tree" >> results/info
     ceph osd tree >> results/info
     echo >> results/info
     echo >> results/info
+
     echo "salt '*' pillar.get roles" >> results/info
     salt '*' pillar.get roles >> results/info
     echo >> results/info
     echo >> results/info
+
     echo "salt '*' pillar.get ceph" >> results/info
     salt '*' pillar.get ceph >> results/info
     echo >> results/info

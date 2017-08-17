@@ -29,7 +29,7 @@ for RUN in 1 2; do
                     echo
                     echo "##### using librbd..."
                     echo
-                    DIR=results/run$RUN/librbd/$WORKLOAD/$BLOCKSIZE
+                    DIR=${PG_NUM}pgs_results/run$RUN/librbd/$WORKLOAD/$BLOCKSIZE
                     RES=$DIR/summary_j${NJOBS}.csv
                     if [ -f $RES ] ; then
                         echo
@@ -67,7 +67,7 @@ for RUN in 1 2; do
                     echo
                     echo "##### using krbd..."
                     echo
-                    DIR=results/run$RUN/krbd/$WORKLOAD/$BLOCKSIZE
+                    DIR=${PG_NUM}pgs_results/run$RUN/krbd/$WORKLOAD/$BLOCKSIZE
                     RES=$DIR/summary_j${NJOBS}.csv
                     if [ -f $RES ] ; then
                         echo
@@ -100,6 +100,7 @@ for RUN in 1 2; do
                     echo "Done"
 
                     # cleanup
+                    rbd unmap /dev/rbd0
                     rbd rm $POOL/$IMAGE
                 done
             done

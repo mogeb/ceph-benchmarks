@@ -5,9 +5,6 @@ source ../common/common.bash
 POOL=benchpool
 IMAGE=image01
 
-# log Cluster details
-log_configuration
-
 echo "Testing if pool deletion is enabled"
 ceph osd pool create cephbench_foobar_testpool 12 12
 if ! ceph osd pool delete cephbench_foobar_testpool cephbench_foobar_testpool --yes-i-really-really-mean-it; then
@@ -15,10 +12,14 @@ if ! ceph osd pool delete cephbench_foobar_testpool cephbench_foobar_testpool --
     exit 1
 fi
 
+# log Cluster details
+log_configuration
+
 
 # runs (for volatility)
 for RUN in 1 2; do
     for PG_NUM in 12 1024; do
+
         ceph osd pool create $POOL $PG_NUM $PG_NUM
         # patterns
         for WORKLOAD in randread randwrite randrw; do
@@ -29,7 +30,7 @@ for RUN in 1 2; do
                     echo
                     echo "##### using librbd..."
                     echo
-                    DIR=${PG_NUM}pgs_results/run$RUN/librbd/$WORKLOAD/$BLOCKSIZE
+                    DIR=results/${PG_NUM}pgs_results/run$RUN/librbd/$WORKLOAD/$BLOCKSIZE
                     RES=$DIR/summary_j${NJOBS}.csv
                     if [ -f $RES ] ; then
                         echo
@@ -67,7 +68,7 @@ for RUN in 1 2; do
                     echo
                     echo "##### using krbd..."
                     echo
-                    DIR=${PG_NUM}pgs_results/run$RUN/krbd/$WORKLOAD/$BLOCKSIZE
+                    DIR=results/${PG_NUM}pgs_results/run$RUN/krbd/$WORKLOAD/$BLOCKSIZE
                     RES=$DIR/summary_j${NJOBS}.csv
                     if [ -f $RES ] ; then
                         echo

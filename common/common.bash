@@ -1,38 +1,41 @@
 
 function log_configuration {
-    mkdir -p results
+    RESULT_PATH=results
+    mkdir -p $RESULT_PATH
+    INFO=$RESULT_PATH/info
 
-    date > results/info
-    echo >> results/info
-    ceph --version >> results/info
-    fio --version >> results/info
-    echo >> results/info
+    date > $INFO
+    echo >> $INFO
+    uname -a >> $INFO
+    ceph --version >> $INFO
+    fio --version >> $INFO
+    echo >> $INFO
 
-    echo "ceph osd tree" >> results/info
-    ceph osd tree >> results/info
-    echo >> results/info
-    echo >> results/info
+    echo "ceph osd tree" >> $INFO
+    ceph osd tree >> $INFO
+    echo >> $INFO
+    echo >> $INFO
 
-    echo "salt '*' pillar.get roles" >> results/info
-    salt '*' pillar.get roles >> results/info
-    echo >> results/info
-    echo >> results/info
+    echo "salt '*' pillar.get roles" >> $INFO
+    salt '*' pillar.get roles >> $INFO
+    echo >> $INFO
+    echo >> $INFO
 
-    echo "salt '*' pillar.get ceph" >> results/info
-    salt '*' pillar.get ceph >> results/info
-    echo >> results/info
-    echo >> results/info
+    echo "salt '*' pillar.get ceph" >> $INFO
+    salt '*' pillar.get ceph >> $INFO
+    echo >> $INFO
+    echo >> $INFO
 
-    echo "salt '*' pillar.get storage" >> results/info
-    salt '*' pillar.get storage >> results/info
-    echo >> results/info
-    echo >> results/info
+    echo "salt '*' pillar.get storage" >> $INFO
+    salt '*' pillar.get storage >> $INFO
+    echo >> $INFO
+    echo >> $INFO
 
-    echo "ceph report" >> results/info
-    ceph report >> results/info
-    echo >> results/info
+    echo "ceph report" >> $INFO
+    ceph report >> $INFO
+    echo >> $INFO
 
-    cp -ar /srv/pillar/ceph/proposals/ results/
+    cp -ar /srv/pillar/ceph/proposals/ $INFO
 }
 
 function average {

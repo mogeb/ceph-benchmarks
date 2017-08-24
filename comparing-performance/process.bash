@@ -25,7 +25,7 @@ for folder in folder1 folder2; do
         echo ",$FIRST_LEG,$SECOND_LEG,$FIRST_LEG,$SECOND_LEG,$FIRST_LEG,$SECOND_LEG,$FIRST_LEG,$SECOND_LEG" >> out_$folder
         for NJOBS in 1 8 16; do
             printf "%2s" $NJOBS
-            echo -n "$NJOBS" >> out
+            echo -n "$NJOBS" >> out_$folder
             for BLOCKSIZE in 4k 64k 1m 2m; do
                 IOPS_SET=()
                 BW_SET=()

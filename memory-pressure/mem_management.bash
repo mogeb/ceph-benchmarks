@@ -2,7 +2,6 @@
 
 source ../common/common.bash
 
-# osds=("172.16.250.34" "172.16.250.35" "172.16.250.36" "172.16.250.37" "172.16.250.38" "172.16.250.39")
 osds=("osd1" "osd2" "osd3" "osd4" "osd5" "osd6")
 
 function copy_collectl_output {
@@ -17,6 +16,7 @@ function copy_collectl_output {
 # for M in 329733752 164866876 82433438 41216719 20608360 10304180 5152090 2576045 1288022
 for M in 329733752 164866876; do
     MEM=$(($M/1024))
+    echo "Setting mem=${MEM}"
     for osd in "${osds[@]}"; do
         ssh $osd "sed -i 's/GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX=\"mem=${MEM}M\"/g' /etc/default/grub"
         ssh $osd "update-bootloader"

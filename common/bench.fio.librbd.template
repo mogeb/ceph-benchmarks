@@ -5,7 +5,7 @@ pool=#POOL#
 rbdname=#IMAGE#
 invalidate=0
 rw=#WORKLOAD#
-bs=4k
+bs=#BLOCKSIZE#
 iodepth=128
 runtime=120
 

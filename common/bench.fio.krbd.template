@@ -3,7 +3,7 @@ invalidate=0
 rw=#WORKLOAD#
 bs=#BLOCKSIZE#
 iodepth=128
-runtime=120
+runtime=500
 filename=/dev/rbd0
 
 [rbd_jobs_#NUM_JOBS#]

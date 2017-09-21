@@ -35,6 +35,10 @@ function log_configuration {
     ceph report >> $INFO
     echo >> $INFO
 
+    echo "ceph-conf --show-config" >> $INFO
+    ceph-conf --show-config >> $INFO
+    echo >> $INFO
+
     cp -ar /srv/pillar/ceph/proposals/ $INFO
 }
 
@@ -62,16 +66,18 @@ function stdev {
     printf "%.0f" $result
 }
 
+# Start collectl on storage nodes
 function start_collectl {
     rawdiskf="cciss/c\d+d\d+ |hd[ab] | sd[a-z]+ |dm-\d+ |xvd[a-z] |fio[a-z]+ | vd[a-z]+ |emcpower[a-z]+ |psv\d+ |nvme[0-9]n[0-9]+p[0-9]+ "
-    echo "Running rm -rf /tmp/ceph-benchmarks-run/"
-    salt -C 'I@roles:storage' cmd.run 'rm -rf /tmp/ceph-benchmarks-run/'
-    echo "Running mkdir /tmp/ceph-benchmarks-run/"
-    salt -C 'I@roles:storage' cmd.run 'mkdir /tmp/ceph-benchmarks-run/'
-    echo "Running collectl -P -s+cjDmN -i 1 --rawdskfilt "$rawdiskf" -F0 -f /tmp/ceph-benchmarks-run/"
-    salt -C 'I@roles:storage' cmd.run 'collectl -P -s+cjdmN -i 1 --rawdskfilt "cciss/c\d+d\d+ |hd[ab] | sd[a-z]+ |dm-\d+ |xvd[a-z] |fio[a-z]+ | vd[a-z]+ |emcpower[a-z]+ |psv\d+ |nvme[0-9]n[0-9]+p[0-9]+ " -F0 -f /tmp/ceph-benchmarks-run/' --async
+    echo "Running rm -rf /tmp/ceph-benchmarks-collectl-data/"
+    salt -C 'I@roles:storage' cmd.run 'rm -rf /tmp/ceph-benchmarks-collectl-data/'
+    echo "Running mkdir /tmp/ceph-benchmarks-collectl-data/"
+    salt -C 'I@roles:storage' cmd.run 'mkdir /tmp/ceph-benchmarks-collectl-data/'
+    echo "Running collectl -P -s+cjDmNy -i 1 --rawdskfilt "$rawdiskf" -F0 -f /tmp/ceph-benchmarks-collectl-data/"
+    salt -C 'I@roles:storage' cmd.run 'collectl -P -s+cjDmNy -i 1 --rawdskfilt "cciss/c\d+d\d+ |hd[ab] | sd[a-z]+ |dm-\d+ |xvd[a-z] |fio[a-z]+ | vd[a-z]+ |emcpower[a-z]+ |psv\d+ |nvme[0-9]n[0-9]+p[0-9]+ " -F0 -f /tmp/ceph-benchmarks-collectl-data/' --async
 }
 
+# Stop collectl on storage nodes
 function stop_collectl {
     echo "Running pkill collectl"
     salt -C 'I@roles:storage' cmd.run 'pkill collectl'

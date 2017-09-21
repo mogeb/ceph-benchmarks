@@ -68,7 +68,7 @@ for RUN in 1 2 3; do
                 echo "Done"
 
                 for loadgen in "${loadgens[@]}"; do
-                    mkdir -p $LOCALDIR/${loadgen}
+                    mkdir -p $LOCAL_DIR/${loadgen}
                     scp -r $loadgen:$RES $LOCAL_DIR/${loadgen}
                 done
 

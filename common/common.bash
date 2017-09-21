@@ -39,7 +39,7 @@ function log_configuration {
     ceph-conf --show-config >> $INFO
     echo >> $INFO
 
-    cp -ar /srv/pillar/ceph/proposals/ $INFO
+    cp -ar /srv/pillar/ceph/proposals/ $RESULT_PATH/
 }
 
 function average {
@@ -81,4 +81,22 @@ function start_collectl {
 function stop_collectl {
     echo "Running pkill collectl"
     salt -C 'I@roles:storage' cmd.run 'pkill collectl'
+}
+
+function wait_for_fio {
+    echo "Waiting for fio"
+    repeat=1
+    while [ $repeat -eq 1 ] ; do
+        repeat=0
+        sleep 10
+        for loadgen in "${loadgens[@]}"; do
+            fio_proc=`ssh $loadgen "pgrep -l fio"`
+            if [ -n "$fio_proc" ] ; then
+                repeat=1
+            fi
+        done
+    done
+
+    echo "Fio done"
+    echo
 }

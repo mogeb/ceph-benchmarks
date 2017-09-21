@@ -20,8 +20,9 @@ for RUN in 1 2 3; do
             # number of jobs
             for NJOBS in 1 2 8 16; do
                 cp ../common/bench.fio.librbd.template bench.fio.template
-                DIR=results/run$RUN/$WORKLOAD/$BLOCKSIZE
+                DIR=/tmp/results/run$RUN/$WORKLOAD/$BLOCKSIZE/${NJOBS}
                 RES=$DIR/summary_j${NJOBS}.csv
+                LOCAL_DIR=results/run$RUN/$WORKLOAD/$BLOCKSIZE/${NJOBS}
                 if [ -f $RES ] ; then
                     echo
                     echo "$RES exists, skipping.."
@@ -30,7 +31,7 @@ for RUN in 1 2 3; do
                     continue
                 fi
 
-                ceph osd pool create $POOL 12 12
+                ceph osd pool create $POOL 2048 2048
                 rbd create $IMAGE --size 2048 --pool $POOL
 
                 if [ "$WORKLOAD" == "randread" ]; then
@@ -50,7 +51,6 @@ for RUN in 1 2 3; do
 
                 rm /tmp/tmp-bench.fio
 
-                cp /tmp/bench.fio $DIR
                 echo
                 echo "Starting collectl"
                 start_collectl run$RUN_$WORKLOAD_$BLOCKSIZE
@@ -60,10 +60,17 @@ for RUN in 1 2 3; do
 
                 for loadgen in "${loadgens[@]}"; do
                     ssh $loadgen "mkdir -p $DIR"
-                    ssh $loadgen "fio --output-format=terse /tmp/bench.fio > $RES"
+                    ssh $loadgen "cp /tmp/bench.fio $DIR"
+                    ssh $loadgen "fio --output-format=terse /tmp/bench.fio > $RES" &
                 done
 
+                wait_for_fio
                 echo "Done"
+
+                for loadgen in "${loadgens[@]}"; do
+                    mkdir -p $LOCALDIR/${loadgen}
+                    scp -r $loadgen:$RES $LOCAL_DIR/${loadgen}
+                done
 
                 echo
                 echo "Stopping collectl"
@@ -71,7 +78,8 @@ for RUN in 1 2 3; do
                 echo
 
                 for osd in "${osds[@]}"; do
-                    scp $osd:/tmp/ceph-benchmarks-collectl-data/* $DIR
+                    mkdir -p "$LOCAL_DIR/${osd}"
+                    scp -r $osd:/tmp/ceph-benchmarks-collectl-data/* "$LOCAL_DIR/${osd}"
                     ssh $osd "rm -rf /tmp/ceph-benchmarks-collectl-data/"
                 done
 

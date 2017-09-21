@@ -57,9 +57,9 @@ for RUN in 1 2 3; do
                 echo
 
                 for osd in "${osds[@]}"; do
-                    scp $osd:/tmp/ceph-benchmarks-run/* $DIR
+                    scp $osd:/tmp/ceph-benchmarks-collectl-data/* $DIR
                 done
-                salt '*' cmd.run 'rm -rf /tmp/ceph-benchmarks-run/'
+                salt '*' cmd.run 'rm -rf /tmp/ceph-benchmarks-collectl-data/'
 
                 # cleanup
                 rbd rm $POOL/$IMAGE

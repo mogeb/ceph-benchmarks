@@ -29,7 +29,6 @@ for RUN in 1 2 3; do
                     echo
                     continue
                 fi
-                mkdir -p $DIR
 
                 ceph osd pool create $POOL 12 12
                 rbd create $IMAGE --size 2048 --pool $POOL
@@ -58,8 +57,9 @@ for RUN in 1 2 3; do
                 echo
                 
                 echo "Starting fio: Run $RUN, WL = $WORKLOAD, BS = $BLOCKSIZE, JOBS = $NJOBS"
-                
+
                 for loadgen in "${loadgens[@]}"; do
+                    ssh $loadgen "mkdir -p $DIR"
                     ssh $loadgen "fio --output-format=terse /tmp/bench.fio > $RES"
                 done
 
@@ -72,8 +72,8 @@ for RUN in 1 2 3; do
 
                 for osd in "${osds[@]}"; do
                     scp $osd:/tmp/ceph-benchmarks-collectl-data/* $DIR
+                    ssh $osd "rm -rf /tmp/ceph-benchmarks-collectl-data/"
                 done
-                salt '*' cmd.run 'rm -rf /tmp/ceph-benchmarks-collectl-data/'
 
                 # cleanup
                 rbd rm $POOL/$IMAGE
